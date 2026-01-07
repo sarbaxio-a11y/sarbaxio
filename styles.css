@@ -10,7 +10,7 @@
 }
 
 :root {
-    /* Colors */
+    /* Colors - Light Mode */
     --primary-color: #6366f1;
     --primary-dark: #4f46e5;
     --primary-light: #818cf8;
@@ -23,6 +23,15 @@
     --text-light: #cbd5e1;
     --white: #ffffff;
     --gray: #64748b;
+    
+    /* Dynamic Colors (change with theme) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --card-bg: #ffffff;
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
@@ -45,6 +54,21 @@
     --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.3);
 }
 
+/* ===== Dark Mode Colors ===== */
+body.dark-mode {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --border-color: #334155;
+    --card-bg: #1e293b;
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -52,9 +76,10 @@ html {
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: var(--text-dark);
-    background-color: var(--white);
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -141,6 +166,33 @@ body {
     height: 3px;
     background: var(--white);
     transition: var(--transition);
+}
+
+/* ===== Theme Toggle Button ===== */
+.theme-toggle {
+    background: transparent;
+    border: 2px solid var(--white);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+.theme-toggle:hover {
+    background: var(--white);
+    color: var(--dark-bg);
+    transform: rotate(20deg);
+}
+
+body.dark-mode .theme-toggle i::before {
+    content: "\\f185"; /* fa-sun icon code */
 }
 
 /* ===== Hero Section ===== */
@@ -320,12 +372,12 @@ body {
     font-size: 42px;
     font-weight: 700;
     margin-bottom: 15px;
-    color: var(--text-dark);
+    color: var(--text-primary);
 }
 
 .section-subtitle {
     font-size: 18px;
-    color: var(--gray);
+    color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
 }
@@ -333,7 +385,7 @@ body {
 /* ===== Services Section ===== */
 .services {
     padding: var(--section-padding);
-    background: var(--light-bg);
+    background: var(--bg-secondary);
 }
 
 .services-grid {
@@ -343,13 +395,14 @@ body {
 }
 
 .service-card {
-    background: var(--white);
+    background: var(--card-bg);
     padding: 40px 30px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 .service-card::before {
@@ -422,11 +475,11 @@ body {
 .service-card h3 {
     font-size: 24px;
     margin-bottom: 15px;
-    color: var(--text-dark);
+    color: var(--text-primary);
 }
 
 .service-card > p {
-    color: var(--gray);
+    color: var(--text-secondary);
     margin-bottom: 20px;
     line-height: 1.8;
 }
@@ -441,7 +494,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--gray);
+    color: var(--text-secondary);
 }
 
 .service-features i {
@@ -508,7 +561,7 @@ body {
 /* ===== About Section ===== */
 .about {
     padding: var(--section-padding);
-    background: var(--white);
+    background: var(--bg-primary);
 }
 
 .about-grid {
@@ -521,7 +574,7 @@ body {
 .about-content h2 {
     font-size: 38px;
     margin-bottom: 20px;
-    color: var(--text-dark);
+    color: var(--text-primary);
 }
 
 .about-content .lead {
@@ -532,7 +585,7 @@ body {
 }
 
 .about-content p {
-    color: var(--gray);
+    color: var(--text-secondary);
     margin-bottom: 30px;
     line-height: 1.8;
 }
@@ -556,7 +609,7 @@ body {
 
 .about-feature h4 {
     margin-bottom: 5px;
-    color: var(--text-dark);
+    color: var(--text-primary);
 }
 
 .about-feature p {
@@ -586,7 +639,7 @@ body {
 /* ===== Contact Section ===== */
 .contact {
     padding: var(--section-padding);
-    background: var(--light-bg);
+    background: var(--bg-secondary);
 }
 
 .contact-grid {
@@ -598,7 +651,7 @@ body {
 .contact-info h3 {
     font-size: 28px;
     margin-bottom: 30px;
-    color: var(--text-dark);
+    color: var(--text-primary);
 }
 
 .contact-item {
@@ -615,11 +668,11 @@ body {
 
 .contact-item h4 {
     margin-bottom: 5px;
-    color: var(--text-dark);
+    color: var(--text-primary);
 }
 
 .contact-item p {
-    color: var(--gray);
+    color: var(--text-secondary);
 }
 
 .contact-social {
@@ -628,7 +681,7 @@ body {
 
 .contact-social h4 {
     margin-bottom: 15px;
-    color: var(--text-dark);
+    color: var(--text-primary);
 }
 
 .social-links {
@@ -656,10 +709,11 @@ body {
 
 /* ===== Contact Form ===== */
 .contact-form {
-    background: var(--white);
+    background: var(--card-bg);
     padding: 40px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
 }
 
 .form-group {
@@ -672,7 +726,7 @@ body {
     left: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--gray);
+    color: var(--text-secondary);
 }
 
 .form-group input,
@@ -680,12 +734,13 @@ body {
 .form-group textarea {
     width: 100%;
     padding: 15px 20px 15px 50px;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--border-color);
     border-radius: 10px;
     font-size: 16px;
     font-family: inherit;
     transition: var(--transition);
-    background: var(--white);
+    background: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 .form-group textarea {
@@ -751,6 +806,12 @@ body {
     
     .hamburger {
         display: flex;
+    }
+    
+    .theme-toggle {
+        position: absolute;
+        right: 70px;
+        top: 15px;
     }
     
     .hero-title {
