@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Test - SARBAXIO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            background: #000;
+            color: #fff;
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+            color: #667eea;
+        }
+        
+        .test-section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        /* Simple Language Dropdown */
+        .language-dropdown {
+            position: relative;
+            display: inline-block;
+            z-index: 9999;
+        }
+        
+        .lang-current {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .lang-current:hover {
+            background: #5568d3;
+        }
+        
+        .lang-options {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            background: #2a2a2a;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            min-width: 200px;
+            display: none;
+            z-index: 10000;
+        }
+        
+        .language-dropdown.active .lang-options {
+            display: block;
+        }
+        
+        .lang-option {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            background: transparent;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .lang-option:hover {
+            background: #667eea;
+        }
+        
+        /* Simple Hamburger */
+        .hamburger {
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .hamburger-line {
+            width: 40px;
+            height: 4px;
+            background: #667eea;
+            margin: 8px 0;
+            border-radius: 2px;
+        }
+        
+        .mobile-menu {
+            background: #2a2a2a;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .hamburger.active + .mobile-menu {
+            display: block;
+        }
+        
+        .console-log {
+            background: #0a0a0a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #667eea;
+            padding-left: 10px;
+        }
+        
+        .success { color: #00ff00; }
+        .info { color: #00bfff; }
+        .warning { color: #ffaa00; }
+    </style>
+</head>
+<body>
+    <h1>🔧 SARBAXIO Dropdown Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Language Dropdown (Inline onclick)</h2>
+        <div class="language-dropdown" id="langDropdown">
+            <button class="lang-current" onclick="toggleDropdown()">
+                🇺🇸 EN ▼
+            </button>
+            <div class="lang-options">
+                <button class="lang-option" onclick="selectLang('en')">🇺🇸 English</button>
+                <button class="lang-option" onclick="selectLang('gr')">🇬🇷 Ελληνικά</button>
+                <button class="lang-option" onclick="selectLang('es')">🇪🇸 Español</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Hamburger Menu</h2>
+        <div class="hamburger" id="hamburger" onclick="toggleHamburger()">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
+        <div class="mobile-menu">
+            <p>✅ Menu is OPEN!</p>
+            <p>This menu appeared when you clicked the hamburger.</p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Console Output:</h2>
+        <div class="console-log" id="console"></div>
+    </div>
+    
+    <script>
+        // Custom console for visual feedback
+        function log(message, type = 'info') {
+            const consoleDiv = document.getElementById('console');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleDiv.insertBefore(entry, consoleDiv.firstChild);
+            console.log(message);
+        }
+        
+        log('✅ Page loaded successfully', 'success');
+        log('✅ Inline onclick handlers ready', 'success');
+        
+        // Language Dropdown
+        function toggleDropdown() {
+            log('🔄 toggleDropdown() called', 'info');
+            const dropdown = document.getElementById('langDropdown');
+            const wasActive = dropdown.classList.contains('active');
+            dropdown.classList.toggle('active');
+            log(`📋 Dropdown is now: ${!wasActive ? 'OPEN ✅' : 'CLOSED ❌'}`, wasActive ? 'warning' : 'success');
+        }
+        
+        function selectLang(lang) {
+            log(`🌍 Language selected: ${lang}`, 'success');
+            const dropdown = document.getElementById('langDropdown');
+            dropdown.classList.remove('active');
+            log('📋 Dropdown closed', 'info');
+        }
+        
+        // Hamburger Menu
+        function toggleHamburger() {
+            log('🍔 toggleHamburger() called', 'info');
+            const hamburger = document.getElementById('hamburger');
+            const wasActive = hamburger.classList.contains('active');
+            hamburger.classList.toggle('active');
+            log(`📋 Hamburger is now: ${!wasActive ? 'ACTIVE ✅' : 'INACTIVE ❌'}`, wasActive ? 'warning' : 'success');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('langDropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                if (dropdown.classList.contains('active')) {
+                    dropdown.classList.remove('active');
+                    log('❌ Dropdown closed (outside click)', 'warning');
+                }
+            }
+        });
+        
+        log('🎯 Ready for testing!', 'success');
+        log('👉 Click the EN button or hamburger menu', 'info');
+    </script>
+</body>
+</html>

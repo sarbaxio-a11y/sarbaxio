@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Landing Page Demos - SARBAXIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .hero {
+            padding: 100px 20px 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .back-btn:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .demo-card {
+            background: #1a1a1a;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .demo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .demo-preview {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.3), transparent);
+            z-index: 1;
+        }
+
+        .demo-preview i {
+            position: relative;
+            z-index: 2;
+        }
+
+        .demo-preview.hair-salon {
+            background: linear-gradient(135deg, #d4af37, #c19a2e);
+        }
+
+        .demo-preview.moving {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+        }
+
+        .demo-preview.insurance {
+            background: linear-gradient(135deg, #0066cc, #0052a3);
+        }
+
+        .demo-preview.dental {
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+        }
+
+        .demo-info {
+            padding: 30px;
+        }
+
+        .demo-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .demo-info p {
+            color: #aaa;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .demo-features {
+            margin-bottom: 25px;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.2);
+            color: #9aa9ff;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 5px 5px 5px 0;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .demo-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .info-section {
+            background: #0a0a0a;
+            padding: 80px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .info-card i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .info-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            color: #aaa;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #000;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        footer p {
+            color: #666;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1><i class="fas fa-laptop-code"></i> Professional Landing Page Demos</h1>
+        <p>See what your custom website will look like! Choose your industry below.</p>
+        <a href="../index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to SARBAXIO
+        </a>
+    </div>
+
+    <!-- Demos Grid -->
+    <div class="container">
+        <h2 class="section-title">Explore Our Demos</h2>
+        <div class="demos-grid">
+            <!-- Hair Salon Demo -->
+            <div class="demo-card">
+                <div class="demo-preview hair-salon">
+                    <i class="fas fa-cut"></i>
+                </div>
+                <div class="demo-info">
+                    <h3>🪒 Hair Salon</h3>
+                    <p>Elegant landing page for hair salons and beauty professionals. Perfect for showcasing services, gallery, and booking appointments.</p>
+                    <div class="demo-features">
+                        <span class="feature-tag"><i class="fas fa-palette"></i> Gold Theme</span>
+                        <span class="feature-tag"><i class="fas fa-images"></i> Gallery</span>
+                        <span class="feature-tag"><i class="fas fa-dollar-sign"></i> Pricing</span>
+                        <span class="feature-tag"><i class="fas fa-calendar"></i> Booking</span>
+                    </div>
+                    <a href="hair-salon.html" class="demo-btn">
+                        View Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Moving Company Demo -->
+            <div class="demo-card">
+                <div class="demo-preview moving">
+                    <i class="fas fa-truck-loading"></i>
+                </div>
+                <div class="demo-info">
+                    <h3>🚚 Moving Company</h3>
+                    <p>Bold and professional design for moving and relocation services. Features service listings and quote request forms.</p>
+                    <div class="demo-features">
+                        <span class="feature-tag"><i class="fas fa-palette"></i> Orange Theme</span>
+                        <span class="feature-tag"><i class="fas fa-boxes"></i> Services</span>
+                        <span class="feature-tag"><i class="fas fa-file-invoice"></i> Quote Form</span>
+                        <span class="feature-tag"><i class="fas fa-shield-alt"></i> Trust Badges</span>
+                    </div>
+                    <a href="moving-company.html" class="demo-btn">
+                        View Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Insurance Agent Demo -->
+            <div class="demo-card">
+                <div class="demo-preview insurance">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="demo-info">
+                    <h3>🛡️ Insurance Agent</h3>
+                    <p>Professional and trustworthy design for insurance agents and brokers. Showcases insurance products and consultation booking.</p>
+                    <div class="demo-features">
+                        <span class="feature-tag"><i class="fas fa-palette"></i> Blue Theme</span>
+                        <span class="feature-tag"><i class="fas fa-briefcase"></i> Products</span>
+                        <span class="feature-tag"><i class="fas fa-handshake"></i> Consultation</span>
+                        <span class="feature-tag"><i class="fas fa-star"></i> Trust</span>
+                    </div>
+                    <a href="insurance-agent.html" class="demo-btn">
+                        View Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dental Clinic Demo -->
+            <div class="demo-card">
+                <div class="demo-preview dental">
+                    <i class="fas fa-tooth"></i>
+                </div>
+                <div class="demo-info">
+                    <h3>🦷 Dental Clinic</h3>
+                    <p>Clean and modern design for dental practices and medical professionals. Features services, team profiles, and appointment booking.</p>
+                    <div class="demo-features">
+                        <span class="feature-tag"><i class="fas fa-palette"></i> Cyan Theme</span>
+                        <span class="feature-tag"><i class="fas fa-user-md"></i> Team</span>
+                        <span class="feature-tag"><i class="fas fa-tooth"></i> Services</span>
+                        <span class="feature-tag"><i class="fas fa-calendar-check"></i> Booking</span>
+                    </div>
+                    <a href="dental-clinic.html" class="demo-btn">
+                        View Demo <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+        <div class="container">
+            <h2 class="section-title">What You Get</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-edit"></i>
+                    <h4>Fully Customizable</h4>
+                    <p>Every demo includes red annotation bubbles showing exactly where to add YOUR content, photos, and contact info.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>Mobile Responsive</h4>
+                    <p>All demos work perfectly on desktop, tablet, and mobile devices with optimized layouts.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-rocket"></i>
+                    <h4>24-Hour Delivery</h4>
+                    <p>Your custom landing page delivered within 24 hours with your branding, colors, and content.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-globe"></i>
+                    <h4>Custom Domain</h4>
+                    <p>Connect your own domain name (www.yourbusiness.com) included in the service.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 SARBAXIO. All rights reserved.</p>
+        <p style="margin-top: 10px;">
+            <a href="../index.html"><i class="fas fa-home"></i> Back to Homepage</a>
+        </p>
+    </footer>
+</body>
+</html>

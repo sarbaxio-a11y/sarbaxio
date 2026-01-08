@@ -1,377 +1,591 @@
 // =====================================================
-// SARBAXIO - Interactive JavaScript
+// SARBAXIO - Main JavaScript (Multilingual + Lensora Style)
 // =====================================================
 
-// Wait for DOM to load
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // ===== Dark Mode Toggle =====
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-    
-    // Check for saved theme preference or default to light mode
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
-        body.classList.add('dark-mode');
+// ===== BULLETPROOF GLOBAL FUNCTIONS WITH DEBUG OVERLAY =====
+window.toggleLanguageDropdown = function(e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
     }
     
-    // Toggle dark mode
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            body.classList.toggle('dark-mode');
-            
-            // Save theme preference
-            const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
-            localStorage.setItem('theme', theme);
-            
-            // Add animation
-            this.style.transform = 'rotate(360deg)';
-            setTimeout(() => {
-                this.style.transform = 'rotate(0deg)';
-            }, 300);
+    const dropdown = document.getElementById('langDropdown');
+    if (!dropdown) {
+        console.error('❌ Dropdown not found!');
+        showDebug('ERROR: Dropdown element not found!');
+        return false;
+    }
+    
+    const isOpen = dropdown.classList.contains('show');
+    dropdown.classList.toggle('show');
+    
+    const status = isOpen ? 'CLOSED' : 'OPENED';
+    const emoji = isOpen ? '🔴' : '🟢';
+    console.log(`${emoji} Dropdown ${status}`);
+    showDebug(`${emoji} Dropdown ${status}<br>Classes: ${dropdown.className}`);
+    
+    return false;
+};
+
+// Debug overlay helper
+function showDebug(message) {
+    let debug = document.getElementById('debugOverlay');
+    if (!debug) {
+        debug = document.createElement('div');
+        debug.id = 'debugOverlay';
+        debug.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: #4ade80;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 2px solid #667eea;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999999;
+            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        `;
+        document.body.appendChild(debug);
+    }
+    debug.innerHTML = `<strong>DEBUG:</strong><br>${message}`;
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        if (debug && debug.parentNode) {
+            debug.style.opacity = '0';
+            setTimeout(() => debug.remove(), 300);
+        }
+    }, 3000);
+}
+
+window.selectLanguage = function(lang, e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    console.log('🌍 Language selected:', lang);
+    
+    const dropdown = document.getElementById('langDropdown');
+    if (dropdown) {
+        dropdown.classList.remove('show');
+    }
+    
+    // Use global currentLang variable
+    if (typeof switchLanguage === 'function') {
+        switchLanguage(lang);
+    }
+    
+    return false;
+};
+
+window.toggleMobileMenu = function(e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    const hamburger = document.getElementById('hamburgerMenu');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (!hamburger || !navMenu) {
+        console.error('❌ Menu elements not found!');
+        return false;
+    }
+    
+    const isOpen = navMenu.classList.contains('show');
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('show');
+    
+    console.log(isOpen ? '🔴 Menu CLOSED' : '🟢 Menu OPENED');
+    
+    return false;
+};
+
+console.log('✅ Global inline handlers registered');
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('langDropdown');
+    const hamburger = document.getElementById('hamburgerMenu');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    // Close language dropdown if clicked outside
+    if (dropdown && !dropdown.contains(e.target)) {
+        if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+            console.log('❌ Language dropdown closed (outside click)');
+        }
+    }
+    
+    // Close mobile menu if clicked outside
+    if (hamburger && navMenu && !hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+        if (hamburger.classList.contains('active')) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('show');
+            console.log('❌ Mobile menu closed (outside click)');
+        }
+    }
+});
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize everything
+    initLanguage();
+    initMobileMenu();
+    initSmoothScroll();
+    initNavbarScroll();
+    initAnimations();
+    initStats();
+    initContactForm();
+    
+    // Remove loading state
+    document.body.classList.add('loaded');
+});
+
+// ===== MULTILINGUAL SYSTEM =====
+let currentLang = localStorage.getItem('language') || 'en';
+
+// Language flag mapping
+const langFlags = {
+    'en': { flag: '🇺🇸', code: 'EN', name: 'English' },
+    'gr': { flag: '🇬🇷', code: 'GR', name: 'Ελληνικά' },
+    'es': { flag: '🇪🇸', code: 'ES', name: 'Español' }
+};
+
+function initLanguage() {
+    const dropdown = document.querySelector('.language-dropdown');
+    const currentBtn = document.querySelector('.lang-current');
+    const options = document.querySelectorAll('.lang-option');
+    
+    if (!dropdown || !currentBtn || !options.length) {
+        console.warn('Language dropdown elements not found');
+        return;
+    }
+    
+    console.log('✅ Language dropdown initialized');
+    
+    // Set initial language display
+    updateCurrentLanguageDisplay();
+    
+    // Use pointerdown for universal compatibility (works on mouse, touch, pen)
+    currentBtn.addEventListener('pointerdown', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const wasActive = dropdown.classList.contains('active');
+        dropdown.classList.toggle('active');
+        
+        console.log('🔄 Language dropdown toggled:', !wasActive);
+        console.log('📋 Classes:', dropdown.className);
+    });
+    
+    // Close dropdown when clicking outside (with delay)
+    setTimeout(() => {
+        document.addEventListener('pointerdown', function(e) {
+            if (!dropdown.contains(e.target)) {
+                const wasActive = dropdown.classList.contains('active');
+                dropdown.classList.remove('active');
+                if (wasActive) {
+                    console.log('❌ Language dropdown closed (outside click)');
+                }
+            }
         });
+    }, 100);
+    
+    // Language option clicks
+    options.forEach(option => {
+        // Mark active option
+        if (option.dataset.lang === currentLang) {
+            option.classList.add('active');
+        }
+        
+        option.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🌍 Language selected:', option.dataset.lang);
+            switchLanguage(option.dataset.lang);
+            dropdown.classList.remove('active');
+        });
+    });
+    
+    // Apply initial language
+    updateLanguage();
+    
+    // Update external links with current language
+    updateExternalLinks();
+}
+
+function updateCurrentLanguageDisplay() {
+    const currentBtn = document.querySelector('.lang-current');
+    if (!currentBtn) return;
+    
+    const langInfo = langFlags[currentLang];
+    currentBtn.querySelector('.lang-flag').textContent = langInfo.flag;
+    currentBtn.querySelector('.lang-code').textContent = langInfo.code;
+}
+
+function switchLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+    
+    // Update dropdown display
+    updateCurrentLanguageDisplay();
+    
+    // Update active option
+    document.querySelectorAll('.lang-option').forEach(option => {
+        option.classList.remove('active');
+        if (option.dataset.lang === lang) {
+            option.classList.add('active');
+        }
+    });
+    
+    // Update all text
+    updateLanguage();
+    
+    // Reload dynamic content
+    updateContactFormServices();
+    
+    // Update external links with language parameter
+    updateExternalLinks();
+}
+
+function updateExternalLinks() {
+    // Update AI Application link
+    const aiLink = document.querySelector('a[href*="ai-chatbot.html"]');
+    if (aiLink) {
+        if (currentLang !== 'en') {
+            aiLink.href = `ai-chatbot.html?lang=${currentLang}`;
+        } else {
+            aiLink.href = 'ai-chatbot.html';
+        }
     }
     
-    // ===== Mobile Navigation Toggle =====
+    // Update Landing Page link
+    const demosLink = document.querySelector('a[href*="demos/index.html"]');
+    if (demosLink) {
+        if (currentLang !== 'en') {
+            demosLink.href = `demos/index.html?lang=${currentLang}`;
+        } else {
+            demosLink.href = 'demos/index.html';
+        }
+    }
+}
+
+function updateLanguage() {
+    const lang = translations[currentLang];
+    
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        const value = getNestedValue(lang, key);
+        
+        if (value) {
+            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                element.placeholder = value;
+            } else {
+                element.textContent = value;
+            }
+        }
+    });
+    
+    // Update document language
+    document.documentElement.lang = currentLang === 'gr' ? 'el' : currentLang;
+}
+
+function getNestedValue(obj, path) {
+    return path.split('.').reduce((acc, part) => {
+        // Handle array notation like features[0]
+        const match = part.match(/(\w+)\[(\d+)\]/);
+        if (match) {
+            return acc && acc[match[1]] ? acc[match[1]][parseInt(match[2])] : undefined;
+        }
+        return acc && acc[part];
+    }, obj);
+}
+
+// ===== MOBILE MENU =====
+function initMobileMenu() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     
-    if (hamburger) {
-        hamburger.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            
-            // Animate hamburger
-            const spans = hamburger.querySelectorAll('span');
-            if (navMenu.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translateY(8px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translateY(-8px)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        });
-        
-        // Close menu when clicking on a link
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', function() {
-                navMenu.classList.remove('active');
-                const spans = hamburger.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            });
-        });
+    if (!hamburger || !navMenu) {
+        console.warn('Mobile menu elements not found');
+        return;
     }
     
-    // ===== Smooth Scrolling =====
+    console.log('✅ Mobile menu initialized');
+    
+    // Use pointerdown for universal compatibility
+    hamburger.addEventListener('pointerdown', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const wasActive = hamburger.classList.contains('active');
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        
+        console.log('🍔 Hamburger menu toggled:', !wasActive);
+        console.log('📋 Hamburger:', hamburger.className);
+        console.log('📋 Menu:', navMenu.className);
+    });
+    
+    // Close menu when clicking on a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('pointerdown', function() {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            console.log('🔗 Menu closed (link clicked)');
+        });
+    });
+    
+    // Close menu when clicking outside (with delay)
+    setTimeout(() => {
+        document.addEventListener('pointerdown', function(e) {
+            if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+                const wasActive = hamburger.classList.contains('active');
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                if (wasActive) {
+                    console.log('❌ Menu closed (outside click)');
+                }
+            }
+        });
+    }, 100);
+}
+
+// ===== SMOOTH SCROLL =====
+function initSmoothScroll() {
+    // Detect if mobile
+    const isMobile = window.innerWidth <= 768;
+    
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const offsetTop = target.offsetTop - 70;
+                const offset = 80;
+                const targetPosition = target.offsetTop - offset;
+                
+                // Use instant scroll on mobile for better performance
                 window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
+                    top: targetPosition,
+                    behavior: isMobile ? 'auto' : 'smooth'
                 });
             }
         });
     });
+}
+
+// ===== NAVBAR SCROLL EFFECT =====
+function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
     
-    // ===== Navbar Background on Scroll =====
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
         if (window.scrollY > 100) {
-            navbar.style.background = 'rgba(15, 23, 42, 1)';
-            navbar.style.padding = '15px 0';
+            navbar.classList.add('scrolled');
         } else {
-            navbar.style.background = 'rgba(15, 23, 42, 0.95)';
-            navbar.style.padding = '20px 0';
+            navbar.classList.remove('scrolled');
         }
     });
+}
+
+// ===== ANIMATIONS (AOS Alternative) =====
+function initAnimations() {
+    const animatedElements = document.querySelectorAll('[data-aos]');
     
-    // ===== Animated Counter for Stats =====
-    function animateCounter(element, target, duration = 2000) {
-        let current = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                element.textContent = target + '+';
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(current);
-            }
-        }, 16);
-    }
-    
-    // ===== Intersection Observer for Animations =====
     const observerOptions = {
-        threshold: 0.2,
+        threshold: 0.1,
         rootMargin: '0px 0px -100px 0px'
     };
     
-    const observer = new IntersectionObserver(function(entries) {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('aos-animate');
-                
-                // Trigger counter animation for stats
-                if (entry.target.classList.contains('stat-item')) {
-                    const numberElement = entry.target.querySelector('.stat-number');
-                    const targetNumber = parseInt(numberElement.getAttribute('data-count'));
-                    if (numberElement && !numberElement.classList.contains('counted')) {
-                        numberElement.classList.add('counted');
-                        animateCounter(numberElement, targetNumber);
-                    }
-                }
-                
-                observer.unobserve(entry.target);
+                setTimeout(() => {
+                    entry.target.classList.add('aos-animate');
+                }, entry.target.dataset.aosDelay || 0);
             }
         });
     }, observerOptions);
     
-    // Observe all elements with data-aos attribute
-    document.querySelectorAll('[data-aos]').forEach(element => {
-        observer.observe(element);
-    });
+    animatedElements.forEach(element => observer.observe(element));
+}
+
+// ===== ANIMATED STATS =====
+function initStats() {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    let animated = false;
     
-    // Observe stat items
-    document.querySelectorAll('.stat-item').forEach(element => {
-        observer.observe(element);
-    });
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !animated) {
+                animated = true;
+                statNumbers.forEach(stat => animateCounter(stat));
+            }
+        });
+    }, { threshold: 0.5 });
     
-    // ===== Form Validation & Submission =====
-    const contactForm = document.querySelector('.contact-form');
+    if (statNumbers.length > 0) {
+        observer.observe(statNumbers[0].parentElement.parentElement);
+    }
+}
+
+function animateCounter(element) {
+    const target = parseInt(element.getAttribute('data-count'));
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
     
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+    const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+            element.textContent = target + '+';
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(current) + '+';
+        }
+    }, 16);
+}
+
+// ===== TEAM SECTION (Dynamic Developer Profiles) =====
+// ===== CONTACT FORM =====
+function initContactForm() {
+    const form = document.querySelector('.contact-form');
+    
+    // Populate service dropdown
+    updateContactFormServices();
+    
+    // Web3Forms will handle the actual submission
+    // We only validate before submission
+    form.addEventListener('submit', (e) => {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const service = document.getElementById('service').value;
+        const message = document.getElementById('message').value;
+        
+        // Basic validation (HTML5 required attributes handle most of this)
+        if (!isValidEmail(email)) {
             e.preventDefault();
-            
-            // Get form values
-            const formData = new FormData(contactForm);
-            const name = contactForm.querySelector('input[type="text"]').value;
-            const email = contactForm.querySelector('input[type="email"]').value;
-            const phone = contactForm.querySelector('input[type="tel"]').value;
-            const service = contactForm.querySelector('select').value;
-            const message = contactForm.querySelector('textarea').value;
-            
-            // Basic validation
-            if (!name || !email || !message || !service) {
-                showNotification('Παρακαλώ συμπληρώστε όλα τα απαιτούμενα πεδία', 'error');
-                return;
-            }
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showNotification('Παρακαλώ εισάγετε έγκυρη διεύθυνση email', 'error');
-                return;
-            }
-            
-            // Simulate form submission
-            const submitBtn = contactForm.querySelector('.btn');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Αποστολή...';
-            submitBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                showNotification('Το μήνυμά σας στάλθηκε επιτυχώς! Θα επικοινωνήσουμε σύντομα.', 'success');
-                contactForm.reset();
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                // Log form data (in production, send to backend)
-                console.log('Form submitted:', {
-                    name,
-                    email,
-                    phone,
-                    service,
-                    message,
-                    timestamp: new Date().toISOString()
-                });
-            }, 2000);
-        });
-    }
+            showNotification(
+                translations[currentLang].contact.notifications?.emailError || 'Please enter a valid email address.',
+                'error'
+            );
+            return false;
+        }
+        
+        // If validation passes, form will submit to Web3Forms
+        console.log('✅ Form validated, submitting to Web3Forms...');
+    });
+}
+
+function updateContactFormServices() {
+    const serviceSelect = document.getElementById('service');
+    if (!serviceSelect) return;
     
-    // ===== Notification System =====
-    function showNotification(message, type = 'success') {
-        // Remove existing notification
-        const existingNotification = document.querySelector('.notification');
-        if (existingNotification) {
-            existingNotification.remove();
-        }
-        
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-            <span>${message}</span>
-            <button class="notification-close"><i class="fas fa-times"></i></button>
-        `;
-        
-        // Add styles
-        Object.assign(notification.style, {
-            position: 'fixed',
-            top: '100px',
-            right: '20px',
-            background: type === 'success' ? '#10b981' : '#ef4444',
-            color: 'white',
-            padding: '20px 25px',
-            borderRadius: '10px',
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '15px',
-            zIndex: '10000',
-            animation: 'slideInRight 0.5s ease',
-            maxWidth: '400px'
-        });
-        
-        document.body.appendChild(notification);
-        
-        // Close button functionality
-        const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.style.cssText = 'background: none; border: none; color: white; cursor: pointer; font-size: 18px; padding: 0; margin-left: 10px;';
-        closeBtn.addEventListener('click', () => {
-            notification.style.animation = 'slideOutRight 0.5s ease';
-            setTimeout(() => notification.remove(), 500);
-        });
-        
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-            if (notification.parentElement) {
-                notification.style.animation = 'slideOutRight 0.5s ease';
-                setTimeout(() => notification.remove(), 500);
-            }
-        }, 5000);
-    }
+    const lang = translations[currentLang];
+    serviceSelect.innerHTML = '';
     
-    // Add notification animations to document
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideInRight {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-        }
+    lang.contact.form.services.forEach(service => {
+        const option = document.createElement('option');
+        option.value = service.value;
+        option.textContent = service.text;
+        serviceSelect.appendChild(option);
+    });
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ===== NOTIFICATIONS =====
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    const icon = type === 'success' 
+        ? '<i class="fas fa-check-circle notification-icon"></i>'
+        : '<i class="fas fa-exclamation-circle notification-icon"></i>';
+    
+    notification.innerHTML = `
+        ${icon}
+        <div class="notification-content">${message}</div>
+        <button class="notification-close"><i class="fas fa-times"></i></button>
     `;
-    document.head.appendChild(style);
     
-    // ===== Parallax Effect for Hero =====
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.hero-content');
-        if (hero && scrolled < window.innerHeight) {
-            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-            hero.style.opacity = 1 - (scrolled / 600);
+    document.body.appendChild(notification);
+    
+    // Close button
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        notification.style.animation = 'slideIn 0.4s ease reverse';
+        setTimeout(() => notification.remove(), 400);
+    });
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'slideIn 0.4s ease reverse';
+            setTimeout(() => notification.remove(), 400);
         }
-    });
-    
-    // ===== Service Card Hover Effect =====
-    document.querySelectorAll('.service-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-    
-    // ===== Loading Animation =====
-    window.addEventListener('load', function() {
-        document.body.style.opacity = '0';
-        setTimeout(() => {
-            document.body.style.transition = 'opacity 0.5s ease';
-            document.body.style.opacity = '1';
-        }, 100);
-    });
-    
-    // ===== Console Welcome Message =====
-    console.log('%c🚀 SARBAXIO', 'font-size: 24px; font-weight: bold; color: #6366f1;');
-    console.log('%cΚαλώς ήρθατε στο website μας!', 'font-size: 14px; color: #64748b;');
-    console.log('%cΓια περισσότερες πληροφορίες: info@sarbaxio.com', 'font-size: 12px; color: #94a3b8;');
-    
-    // ===== Easter Egg: Konami Code =====
-    let konamiCode = [];
-    const konamiPattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    
-    document.addEventListener('keydown', function(e) {
-        konamiCode.push(e.key);
-        konamiCode = konamiCode.slice(-10);
-        
-        if (konamiCode.join('') === konamiPattern.join('')) {
-            showNotification('🎉 Βρήκατε το μυστικό! Είστε awesome! 🚀', 'success');
-            document.body.style.animation = 'rainbow 3s ease infinite';
-        }
-    });
-    
-    const rainbowStyle = document.createElement('style');
-    rainbowStyle.textContent = `
-        @keyframes rainbow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-    `;
-    document.head.appendChild(rainbowStyle);
+    }, 5000);
+}
+
+// ===== PARALLAX EFFECT =====
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent) {
+        heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+        heroContent.style.opacity = 1 - (scrolled / 600);
+    }
 });
 
-// ===== Utility Functions =====
-
-// Check if element is in viewport
-function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
-
-// Debounce function for performance
-function debounce(func, wait = 20, immediate = true) {
-    let timeout;
-    return function() {
-        const context = this, args = arguments;
-        const later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        const callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-    };
-}
-
-// Console ASCII Art (for fun!)
+// ===== CONSOLE EASTER EGG =====
 console.log(`
-   _____ ___    ____  ____  ___  _  _______ ____ 
-  / ___//   |  / __ \\/ __ )/ _ \\| |/ /  _/ // __ \\
-  \\__ \\/ /| | / /_/ / __  / /_\\ \\  / / // // / / /
- ___/ / ___ |/ _, _/ /_/ / _, _/  /_/ // // /_/ / 
-/____/_/  |_/_/ |_/_____/_/ |_/_/\\_\\___\\____/  
-                                                  
-`);
+%c
+╔═══════════════════════════════════════╗
+║                                       ║
+║          SARBAXIO                     ║
+║   Expert Developer Network            ║
+║                                       ║
+║   Built with ❤️ by the SARBAXIO Team  ║
+║                                       ║
+╚═══════════════════════════════════════╝
+`, 'color: #667eea; font-weight: bold; font-size: 14px;');
+
+console.log('%cInterested in joining our team? Contact us at info@sarbaxio.com', 
+    'color: #667eea; font-size: 12px;');
+
+// ===== KONAMI CODE EASTER EGG =====
+let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+            showNotification('🎉 Konami Code Activated! You found the secret!', 'success');
+            document.body.style.animation = 'rainbow 2s ease-in-out';
+            setTimeout(() => {
+                document.body.style.animation = '';
+            }, 2000);
+            konamiIndex = 0;
+        }
+    } else {
+        konamiIndex = 0;
+    }
+});
+
+// Rainbow animation for easter egg
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes rainbow {
+        0% { filter: hue-rotate(0deg); }
+        50% { filter: hue-rotate(180deg); }
+        100% { filter: hue-rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);

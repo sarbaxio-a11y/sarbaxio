@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bright Smile Dental - Professional Demo by SARBAXIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00b4d8;
+            --secondary: #0077b6;
+            --accent: #90e0ef;
+            --dark: #023e8a;
+            --light: #caf0f8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Language Detection & Multilingual Annotations */
+        .annotation {
+            position: absolute;
+            background: rgba(255, 0, 0, 0.92);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 6px 20px rgba(255,0,0,0.4);
+            animation: pulse 2s ease-in-out infinite;
+            backdrop-filter: blur(4px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .annotation::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid rgba(255, 0, 0, 0.92);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.95; }
+            50% { transform: scale(1.08); opacity: 1; }
+        }
+
+        /* Clean Top Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .demo-badge i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .back-to-sarbaxio {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-to-sarbaxio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.93), rgba(0, 119, 182, 0.93)),
+                        url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1600') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Client Social Media Section */
+        .client-social {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-btn.facebook:hover { border-color: #1877f2; color: #1877f2; }
+        .social-btn.instagram:hover { 
+            border-color: #e4405f; 
+            color: #e4405f;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+        .social-btn.twitter:hover { border-color: #1da1f2; color: #1da1f2; }
+        .social-btn.linkedin:hover { border-color: #0077b5; color: #0077b5; }
+        .social-btn.youtube:hover { border-color: #ff0000; color: #ff0000; }
+
+        /* Services Section */
+        .services {
+            padding: 100px 40px;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 60px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .service-price {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* Google Maps Integration - PREMIUM FEATURE #1 */
+        .map-section {
+            padding: 100px 40px;
+            background: white;
+        }
+
+        .map-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 500px;
+            border-radius: 16px;
+            border: 4px solid var(--light);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Live Chat Widget - PREMIUM FEATURE #2 */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 998;
+        }
+
+        .chat-button {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 6px 24px rgba(0, 180, 216, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: chatPulse 2s ease-in-out infinite;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 32px rgba(0, 180, 216, 0.6);
+        }
+
+        @keyframes chatPulse {
+            0%, 100% { box-shadow: 0 6px 24px rgba(0, 180, 216, 0.4); }
+            50% { box-shadow: 0 6px 24px rgba(0, 180, 216, 0.8), 0 0 0 20px rgba(0, 180, 216, 0); }
+        }
+
+        .chat-bubble {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            background: white;
+            padding: 12px 18px;
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            animation: bubbleBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bubbleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Contact Form */
+        .contact {
+            padding: 100px 40px;
+            background: linear-gradient(135deg, var(--light) 0%, #fff 100%);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 180, 216, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .top-bar {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px 20px;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .client-social {
+                bottom: 20px;
+                gap: 12px;
+            }
+            .social-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Clean Top Navigation Bar -->
+    <div class="top-bar">
+        <div class="demo-badge">
+            <i class="fas fa-info-circle"></i>
+            <span class="demo-lang-text">This is a professional demo by SARBAXIO</span>
+        </div>
+        <a href="https://sarbaxio.com" class="back-to-sarbaxio">
+            <i class="fas fa-arrow-left"></i>
+            <span class="back-lang-text">Back to SARBAXIO</span>
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <!-- Annotation: Business Name -->
+            <div class="annotation" style="top: -60px; left: 50%; transform: translateX(-50%);">
+                <span class="ann-business-name">Your Business Name Here</span>
+            </div>
+            
+            <h1>🦷 Bright Smile Dental</h1>
+            <p>Professional Dental Care for Your Family</p>
+            
+            <!-- Annotation: Tagline -->
+            <div class="annotation" style="bottom: -50px; left: 50%; transform: translateX(-50%);">
+                <span class="ann-tagline">Your Custom Tagline</span>
+            </div>
+        </div>
+
+        <!-- Client Social Media Buttons -->
+        <div class="client-social">
+            <!-- Annotation: Social Media -->
+            <div class="annotation" style="top: -50px; left: 50%; transform: translateX(-50%); white-space: nowrap;">
+                <span class="ann-social">Your Social Media Links</span>
+            </div>
+            
+            <a href="#" class="social-btn facebook" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-btn instagram" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-btn twitter" title="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-btn linkedin" title="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#" class="social-btn youtube" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <h2 class="section-title">Our Dental Services</h2>
+        
+        <!-- Annotation: Services -->
+        <div class="annotation" style="top: 40px; left: 50%; transform: translateX(-50%);">
+            <span class="ann-services">Add Your Services & Pricing</span>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fas fa-tooth"></i>
+                <h3>General Dentistry</h3>
+                <p>Regular checkups, cleanings, and preventive care</p>
+                <div class="service-price">$60 - $120</div>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-teeth"></i>
+                <h3>Teeth Whitening</h3>
+                <p>Professional whitening for a brighter smile</p>
+                <div class="service-price">$250 - $450</div>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-tooth"></i>
+                <h3>Dental Implants</h3>
+                <p>Permanent solution for missing teeth</p>
+                <div class="service-price">$1,200 - $2,500</div>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-teeth-open"></i>
+                <h3>Orthodontics</h3>
+                <p>Braces and aligners for perfect teeth alignment</p>
+                <div class="service-price">$3,000 - $7,000</div>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-tooth"></i>
+                <h3>Root Canal</h3>
+                <p>Save infected teeth with expert care</p>
+                <div class="service-price">$500 - $1,500</div>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-first-aid"></i>
+                <h3>Emergency Care</h3>
+                <p>24/7 emergency dental services</p>
+                <div class="service-price">$150 - $500</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREMIUM FEATURE #1: Google Maps Integration -->
+    <section class="map-section">
+        <h2 class="section-title">📍 Find Us</h2>
+        
+        <!-- Annotation: Google Maps -->
+        <div class="annotation" style="top: 40px; left: 50%; transform: translateX(-50%);">
+            <span class="ann-location">Your Business Location on Google Maps</span>
+        </div>
+
+        <div class="map-container">
+            <!-- Placeholder for Google Maps Embed -->
+            <iframe 
+                class="map-frame"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.682620746063!2d-73.98784368459395!3d40.74844097932847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact">
+        <h2 class="section-title">📅 Book an Appointment</h2>
+        
+        <!-- Annotation: Contact Form -->
+        <div class="annotation" style="top: 40px; left: 50%; transform: translateX(-50%);">
+            <span class="ann-form">Your Contact Form (Email Integration)</span>
+        </div>
+
+        <form class="contact-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="John Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+            </div>
+
+            <div class="form-group">
+                <label for="service">Preferred Service</label>
+                <input type="text" id="service" name="service" placeholder="e.g., Teeth Cleaning">
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Tell us about your needs..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-calendar-check"></i> Book Appointment
+            </button>
+        </form>
+    </section>
+
+    <!-- PREMIUM FEATURE #2: Live Chat Widget -->
+    <div class="chat-widget">
+        <!-- Annotation: Live Chat -->
+        <div class="annotation" style="bottom: 80px; right: 0; white-space: nowrap;">
+            <span class="ann-chat">Live Chat Widget (Optional)</span>
+        </div>
+        
+        <div class="chat-bubble">
+            <span class="chat-lang-text">Need help? Chat with us!</span>
+        </div>
+        <div class="chat-button">
+            <i class="fas fa-comments"></i>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Bright Smile Dental. All rights reserved.</p>
+        <p>Built with ❤️ by <a href="https://sarbaxio.com">SARBAXIO</a></p>
+    </footer>
+
+    <!-- Multilingual Script -->
+    <script>
+        // Detect language from URL parameter or localStorage (from sarbaxio.com)
+        const urlParams = new URLSearchParams(window.location.search);
+        const detectedLang = urlParams.get('lang') || localStorage.getItem('sarbaxio_lang') || 'en';
+
+        // Multilingual Translations
+        const translations = {
+            en: {
+                demo_badge: 'This is a professional demo by SARBAXIO',
+                back_btn: 'Back to SARBAXIO',
+                ann_business_name: 'Your Business Name Here',
+                ann_tagline: 'Your Custom Tagline',
+                ann_social: 'Your Social Media Links',
+                ann_services: 'Add Your Services & Pricing',
+                ann_location: 'Your Business Location on Google Maps',
+                ann_form: 'Your Contact Form (Email Integration)',
+                ann_chat: 'Live Chat Widget (Optional)',
+                chat_bubble: 'Need help? Chat with us!'
+            },
+            gr: {
+                demo_badge: 'Αυτό είναι ένα επαγγελματικό demo από το SARBAXIO',
+                back_btn: 'Πίσω στο SARBAXIO',
+                ann_business_name: 'Εδώ θα μπει το όνομα της επιχείρησής σας',
+                ann_tagline: 'Εδώ το δικό σας σλόγκαν',
+                ann_social: 'Εδώ τα δικά σας Social Media',
+                ann_services: 'Εδώ οι υπηρεσίες και τιμές σας',
+                ann_location: 'Εδώ η τοποθεσία σας στο Google Maps',
+                ann_form: 'Εδώ η φόρμα επικοινωνίας (Email)',
+                ann_chat: 'Live Chat Widget (προαιρετικό)',
+                chat_bubble: 'Χρειάζεστε βοήθεια; Μιλήστε μαζί μας!'
+            },
+            es: {
+                demo_badge: 'Esta es una demo profesional de SARBAXIO',
+                back_btn: 'Volver a SARBAXIO',
+                ann_business_name: 'Aquí irá el nombre de su negocio',
+                ann_tagline: 'Su eslogan personalizado',
+                ann_social: 'Sus enlaces de redes sociales',
+                ann_services: 'Agregue sus servicios y precios',
+                ann_location: 'Su ubicación en Google Maps',
+                ann_form: 'Su formulario de contacto (integración de email)',
+                ann_chat: 'Widget de chat en vivo (opcional)',
+                chat_bubble: '¿Necesitas ayuda? ¡Chatea con nosotros!'
+            }
+        };
+
+        // Apply translations
+        function applyTranslations(lang) {
+            const trans = translations[lang] || translations.en;
+            
+            // Update all translatable elements
+            document.querySelector('.demo-lang-text').textContent = trans.demo_badge;
+            document.querySelector('.back-lang-text').textContent = trans.back_btn;
+            document.querySelector('.ann-business-name').textContent = trans.ann_business_name;
+            document.querySelector('.ann-tagline').textContent = trans.ann_tagline;
+            document.querySelector('.ann-social').textContent = trans.ann_social;
+            document.querySelector('.ann-services').textContent = trans.ann_services;
+            document.querySelector('.ann-location').textContent = trans.ann_location;
+            document.querySelector('.ann-form').textContent = trans.ann_form;
+            document.querySelector('.ann-chat').textContent = trans.ann_chat;
+            document.querySelector('.chat-lang-text').textContent = trans.chat_bubble;
+        }
+
+        // Initialize with detected language
+        applyTranslations(detectedLang);
+
+        // Chat button interaction
+        document.querySelector('.chat-button').addEventListener('click', function() {
+            alert('Live Chat feature will be integrated here!\n\nOptions:\n- Tawk.to\n- Intercom\n- LiveChat\n- Facebook Messenger\n\n(This is a demo placeholder)');
+        });
+    </script>
+</body>
+</html>

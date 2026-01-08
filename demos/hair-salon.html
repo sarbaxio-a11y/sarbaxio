@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Hair Studio - Professional Demo by SARBAXIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #d4af37;
+            --secondary: #c9a227;
+            --accent: #f5e6d3;
+            --dark: #2c2416;
+            --light: #faf8f3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Multilingual Annotations */
+        .annotation {
+            position: absolute;
+            background: rgba(255, 0, 0, 0.92);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 6px 20px rgba(255,0,0,0.4);
+            animation: pulse 2s ease-in-out infinite;
+            backdrop-filter: blur(4px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .annotation::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid rgba(255, 0, 0, 0.92);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.95; }
+            50% { transform: scale(1.08); opacity: 1; }
+        }
+
+        /* Clean Top Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .demo-badge i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .back-to-sarbaxio {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-to-sarbaxio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.90), rgba(201, 162, 39, 0.90)),
+                        url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1600') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Client Social Media */
+        .client-social {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-btn.facebook:hover { border-color: #1877f2; color: #1877f2; }
+        .social-btn.instagram:hover { 
+            border-color: #e4405f; 
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+        .social-btn.twitter:hover { border-color: #1da1f2; color: #1da1f2; }
+        .social-btn.linkedin:hover { border-color: #0077b5; color: #0077b5; }
+        .social-btn.youtube:hover { border-color: #ff0000; color: #ff0000; }
+
+        /* Services Section */
+        .services {
+            padding: 100px 40px;
+            background: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 60px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border-top: 4px solid var(--primary);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(212, 175, 55, 0.2);
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .service-price {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 100px 40px;
+            background: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 350px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Google Maps - PREMIUM FEATURE #1 */
+        .map-section {
+            padding: 100px 40px;
+            background: var(--light);
+        }
+
+        .map-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 500px;
+            border-radius: 16px;
+            border: 4px solid var(--primary);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Live Chat - PREMIUM FEATURE #2 */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 998;
+        }
+
+        .chat-button {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 6px 24px rgba(212, 175, 55, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: chatPulse 2s ease-in-out infinite;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.6);
+        }
+
+        @keyframes chatPulse {
+            0%, 100% { box-shadow: 0 6px 24px rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 6px 24px rgba(212, 175, 55, 0.8), 0 0 0 20px rgba(212, 175, 55, 0); }
+        }
+
+        .chat-bubble {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            background: white;
+            padding: 12px 18px;
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            animation: bubbleBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bubbleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Contact Form */
+        .contact {
+            padding: 100px 40px;
+            background: linear-gradient(135deg, var(--accent) 0%, #fff 100%);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .top-bar {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px 20px;
+            }
+            .services-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Clean Top Bar -->
+    <div class="top-bar">
+        <div class="demo-badge">
+            <i class="fas fa-info-circle"></i>
+            <span class="demo-lang-text">This is a professional demo by SARBAXIO</span>
+        </div>
+        <a href="https://sarbaxio.com" class="back-to-sarbaxio">
+            <i class="fas fa-arrow-left"></i>
+            <span class="back-lang-text">Back to SARBAXIO</span>
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="annotation" style="top: -60px; left: 50%; transform: translateX(-50%);">
+                <span class="ann-business-name">Your Business Name Here</span>
+            </div>
+            
+            <h1>✨ Luxe Hair Studio</h1>
+            <p>Where Beauty Meets Expertise</p>
+            
+            <div class="annotation" style="bottom: -50px; left: 50%; transform: translateX(-50%);">
+                <span class="ann-tagline">Your Custom Tagline</span>
+            </div>
+        </div>
+
+        <!-- Client Social Media -->
+        <div class="client-social">
+            <div class="annotation" style="top: -50px; left: 50%; transform: translateX(-50%); white-space: nowrap;">
+                <span class="ann-social">Your Social Media Links</span>
+            </div>
+            
+            <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-btn instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-btn twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-btn youtube"><i class="fab fa-youtube"></i></a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <h2 class="section-title">Our Services</h2>
+        
+        <div class="annotation" style="top: 40px; left: 50%; transform: translateX(-50%);">
+            <span class="ann-services">Add Your Services & Pricing</span>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fas fa-cut"></i>
+                <h3>Haircut & Styling</h3>
+                <p>Professional cuts for all hair types</p>
+                <div class="service-price">$45 - $85</div>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-palette"></i>
+                <h3>Hair Coloring</h3>
+                <p>Full color, highlights, and balayage</p>
+                <div class="service-price">$80 - $200</div>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-spa"></i>
+                <h3>Hair Treatment</h3>
+                <p>Deep conditioning and keratin treatments</p>
+                <div class="service-price">$60 - $150</div>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-magic"></i>
+                <h3>Special Occasion</h3>
+                <p>Bridal, prom, and event styling</p>
+                <div class="service-price">$100 - $250</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery">
+        <h2 class="section-title">Our Work</h2>
+        
+        <div class="annotation" style="top: 40px; left: 50%; transform: translateX(-50%);">
+            <span class="ann-gallery">Your Portfolio Photos</span>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600" alt="Hair Styling">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600" alt="Hair Coloring">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=600" alt="Hair Treatment">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=600" alt="Bridal Hair">
+            </div>
+        </div>
+    </section>
+
+    <!-- PREMIUM: Google Maps -->
+    <section class="map-section">
+        <h2 class="section-title">📍 Visit Us</h2>
+        
+        <div class="annotation" style="top: 40px; left: 50%; transform: translateX(-50%);">
+            <span class="ann-location">Your Business Location</span>
+        </div>
+
+        <div class="map-container">
+            <iframe 
+                class="map-frame"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.682620746063!2d-73.98784368459395!3d40.74844097932847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+                allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact">
+        <h2 class="section-title">📅 Book Your Appointment</h2>
+        
+        <div class="annotation" style="top: 40px; left: 50%; transform: translateX(-50%);">
+            <span class="ann-form">Contact Form Integration</span>
+        </div>
+
+        <form class="contact-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required placeholder="Jane Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="jane@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" required placeholder="(555) 123-4567">
+            </div>
+
+            <div class="form-group">
+                <label for="service">Service</label>
+                <select id="service" required>
+                    <option value="">Select a service</option>
+                    <option value="haircut">Haircut & Styling</option>
+                    <option value="coloring">Hair Coloring</option>
+                    <option value="treatment">Hair Treatment</option>
+                    <option value="special">Special Occasion</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Preferred Date</label>
+                <input type="date" id="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Additional Notes</label>
+                <textarea id="message" rows="3" placeholder="Tell us about your needs..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-calendar-check"></i> Book Now
+            </button>
+        </form>
+    </section>
+
+    <!-- PREMIUM: Live Chat Widget -->
+    <div class="chat-widget">
+        <div class="annotation" style="bottom: 80px; right: 0; white-space: nowrap;">
+            <span class="ann-chat">Live Chat (Optional)</span>
+        </div>
+        
+        <div class="chat-bubble">
+            <span class="chat-lang-text">Need help? Chat with us!</span>
+        </div>
+        <div class="chat-button">
+            <i class="fas fa-comments"></i>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Luxe Hair Studio. All rights reserved.</p>
+        <p>Built with ❤️ by <a href="https://sarbaxio.com">SARBAXIO</a></p>
+    </footer>
+
+    <!-- Multilingual Script -->
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const detectedLang = urlParams.get('lang') || localStorage.getItem('sarbaxio_lang') || 'en';
+
+        const translations = {
+            en: {
+                demo_badge: 'This is a professional demo by SARBAXIO',
+                back_btn: 'Back to SARBAXIO',
+                ann_business_name: 'Your Business Name Here',
+                ann_tagline: 'Your Custom Tagline',
+                ann_social: 'Your Social Media Links',
+                ann_services: 'Add Your Services & Pricing',
+                ann_gallery: 'Your Portfolio Photos',
+                ann_location: 'Your Business Location',
+                ann_form: 'Contact Form Integration',
+                ann_chat: 'Live Chat (Optional)',
+                chat_bubble: 'Need help? Chat with us!'
+            },
+            gr: {
+                demo_badge: 'Επαγγελματικό demo από το SARBAXIO',
+                back_btn: 'Πίσω στο SARBAXIO',
+                ann_business_name: 'Το όνομα της επιχείρησής σας',
+                ann_tagline: 'Το δικό σας σλόγκαν',
+                ann_social: 'Τα Social Media σας',
+                ann_services: 'Οι υπηρεσίες και τιμές σας',
+                ann_gallery: 'Οι φωτογραφίες του χαρτοφυλακίου σας',
+                ann_location: 'Η τοποθεσία σας',
+                ann_form: 'Φόρμα επικοινωνίας',
+                ann_chat: 'Live Chat (προαιρετικό)',
+                chat_bubble: 'Χρειάζεστε βοήθεια; Μιλήστε μαζί μας!'
+            },
+            es: {
+                demo_badge: 'Demo profesional de SARBAXIO',
+                back_btn: 'Volver a SARBAXIO',
+                ann_business_name: 'El nombre de su negocio',
+                ann_tagline: 'Su eslogan personalizado',
+                ann_social: 'Sus redes sociales',
+                ann_services: 'Sus servicios y precios',
+                ann_gallery: 'Sus fotos de portafolio',
+                ann_location: 'Su ubicación',
+                ann_form: 'Formulario de contacto',
+                ann_chat: 'Chat en vivo (opcional)',
+                chat_bubble: '¿Necesitas ayuda? ¡Chatea!'
+            }
+        };
+
+        function applyTranslations(lang) {
+            const trans = translations[lang] || translations.en;
+            document.querySelector('.demo-lang-text').textContent = trans.demo_badge;
+            document.querySelector('.back-lang-text').textContent = trans.back_btn;
+            document.querySelector('.ann-business-name').textContent = trans.ann_business_name;
+            document.querySelector('.ann-tagline').textContent = trans.ann_tagline;
+            document.querySelector('.ann-social').textContent = trans.ann_social;
+            document.querySelector('.ann-services').textContent = trans.ann_services;
+            document.querySelector('.ann-gallery').textContent = trans.ann_gallery;
+            document.querySelector('.ann-location').textContent = trans.ann_location;
+            document.querySelector('.ann-form').textContent = trans.ann_form;
+            document.querySelector('.ann-chat').textContent = trans.ann_chat;
+            document.querySelector('.chat-lang-text').textContent = trans.chat_bubble;
+        }
+
+        applyTranslations(detectedLang);
+
+        document.querySelector('.chat-button').addEventListener('click', function() {
+            alert('Live Chat integration available!\n\nOptions: Tawk.to, Intercom, LiveChat, Facebook Messenger');
+        });
+    </script>
+</body>
+</html>

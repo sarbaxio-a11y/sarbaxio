@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Chatbot | SARBAXIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #0a0e27;
+            --darker: #050810;
+            --white: #ffffff;
+            --white-70: rgba(255, 255, 255, 0.7);
+            --white-30: rgba(255, 255, 255, 0.3);
+            --white-10: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--darker);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .ai-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0a0e27 100%);
+        }
+
+        .ai-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-200px) translateX(-50px); }
+            75% { transform: translateY(-100px) translateX(100px); }
+        }
+
+        /* Neural Network Lines */
+        .neural-network {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        .neural-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Back to SARBAXIO Button */
+        .back-to-sarbaxio {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 6px 24px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-to-sarbaxio:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Main Content */
+        .ai-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 40px 60px;
+        }
+
+        /* AI Robot Icon */
+        .ai-robot {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 40px;
+            position: relative;
+            animation: robotFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes robotFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .robot-icon {
+            font-size: 140px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 10px 30px rgba(102, 126, 234, 0.5));
+            animation: robotGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes robotGlow {
+            0%, 100% { filter: drop-shadow(0 10px 30px rgba(102, 126, 234, 0.5)); }
+            50% { filter: drop-shadow(0 15px 50px rgba(102, 126, 234, 0.9)); }
+        }
+
+        /* Title Section */
+        .ai-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ai-title h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--white), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 0 60px rgba(102, 126, 234, 0.5);
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .ai-subtitle {
+            font-size: 1.8rem;
+            color: var(--white-70);
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        /* Description */
+        .ai-description {
+            max-width: 900px;
+            text-align: center;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--white-70);
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .ai-description strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Highlight Features */
+        .ai-highlights {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .highlight-badge {
+            background: rgba(102, 126, 234, 0.15);
+            border: 2px solid rgba(102, 126, 234, 0.4);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            backdrop-filter: blur(10px);
+            animation: badgePulse 2s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .highlight-badge i {
+            font-size: 1.2rem;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(102, 126, 234, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(102, 126, 234, 0.6); }
+        }
+
+        /* CTA Button */
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 60px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+            transition: all 0.4s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 60px rgba(102, 126, 234, 0.8);
+        }
+
+        .cta-button i {
+            font-size: 1.6rem;
+            z-index: 1;
+        }
+
+        .cta-button span {
+            z-index: 1;
+        }
+
+        /* Features Grid */
+        .ai-features {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .feature-card p {
+            font-size: 1.05rem;
+            color: var(--white-70);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .ai-footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--white-70);
+            font-size: 0.95rem;
+        }
+
+        .ai-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .back-to-sarbaxio {
+                top: 15px;
+                right: 15px;
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+
+            .ai-title h1 {
+                font-size: 2.5rem;
+            }
+
+            .ai-subtitle {
+                font-size: 1.3rem;
+            }
+
+            .ai-description {
+                font-size: 1.1rem;
+            }
+
+            .ai-highlights {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .cta-button {
+                padding: 16px 40px;
+                font-size: 1.2rem;
+            }
+
+            .ai-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="ai-background"></div>
+    <div class="ai-particles" id="particles"></div>
+    <div class="neural-network" id="neural-network"></div>
+
+    <!-- Back to SARBAXIO -->
+    <a href="index.html" class="back-to-sarbaxio" id="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        <span id="back-text">Back to SARBAXIO</span>
+    </a>
+
+    <!-- Main Content -->
+    <div class="ai-container">
+        <!-- AI Robot Icon -->
+        <div class="ai-robot">
+            <i class="fas fa-robot robot-icon"></i>
+        </div>
+
+        <!-- Title Section -->
+        <div class="ai-title">
+            <h1 id="main-title">AI-Powered Chatbot</h1>
+            <p class="ai-subtitle" id="subtitle">Your 24/7 Digital Employee</p>
+        </div>
+
+        <!-- Description -->
+        <p class="ai-description" id="description">
+            Imagine a <strong>smart digital assistant</strong> working for your business around the clock. 
+            Our AI chatbot <strong>recommends products</strong>, <strong>collects leads</strong>, 
+            <strong>answers questions</strong>, <strong>suggests bundles</strong>, and 
+            <strong>converts visitors into customers</strong>—all automatically. 
+            <strong>Never miss a sale again.</strong>
+        </p>
+
+        <!-- Highlight Badges -->
+        <div class="ai-highlights">
+            <div class="highlight-badge">
+                <i class="fas fa-check-circle"></i>
+                <span id="badge1">Never Miss a Sale</span>
+            </div>
+            <div class="highlight-badge">
+                <i class="fas fa-brain"></i>
+                <span id="badge2">Always Learning</span>
+            </div>
+            <div class="highlight-badge">
+                <i class="fas fa-chart-line"></i>
+                <span id="badge3">Always Improving</span>
+            </div>
+        </div>
+
+        <!-- CTA Button -->
+        <a href="#contact" class="cta-button" id="cta-btn">
+            <i class="fas fa-rocket"></i>
+            <span id="cta-text">Get Started</span>
+        </a>
+
+        <!-- Features Grid -->
+        <div class="ai-features">
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3 id="feature1-title">24/7 Availability</h3>
+                <p id="feature1-desc">Your AI assistant never sleeps. It responds to customers instantly, any time of day or night.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 id="feature2-title">Smart Recommendations</h3>
+                <p id="feature2-desc">AI analyzes customer behavior and suggests products or services they'll love, boosting your sales.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 id="feature3-title">Lead Collection</h3>
+                <p id="feature3-desc">Automatically capture visitor information and turn curious browsers into qualified leads.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3 id="feature4-title">Continuous Learning</h3>
+                <p id="feature4-desc">Your AI gets smarter every day by learning from customer interactions and feedback.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3 id="feature5-title">Bundle Suggestions</h3>
+                <p id="feature5-desc">Increase average order value by intelligently recommending product bundles and upgrades.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3 id="feature6-title">Analytics Dashboard</h3>
+                <p id="feature6-desc">Track performance, customer satisfaction, and conversion rates with detailed insights.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="ai-footer">
+        <p id="footer-text">Built with ❤️ by <a href="index.html">SARBAXIO</a> | Powering the future of customer engagement</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Language Detection
+        const urlParams = new URLSearchParams(window.location.search);
+        const detectedLang = urlParams.get('lang') || localStorage.getItem('sarbaxio_lang') || 'en';
+
+        // Multilingual Translations
+        const translations = {
+            en: {
+                back: 'Back to SARBAXIO',
+                title: 'AI-Powered Chatbot',
+                subtitle: 'Your 24/7 Digital Employee',
+                description: 'Imagine a <strong>smart digital assistant</strong> working for your business around the clock. Our AI chatbot <strong>recommends products</strong>, <strong>collects leads</strong>, <strong>answers questions</strong>, <strong>suggests bundles</strong>, and <strong>converts visitors into customers</strong>—all automatically. <strong>Never miss a sale again.</strong>',
+                badge1: 'Never Miss a Sale',
+                badge2: 'Always Learning',
+                badge3: 'Always Improving',
+                cta: 'Get Started',
+                feature1_title: '24/7 Availability',
+                feature1_desc: 'Your AI assistant never sleeps. It responds to customers instantly, any time of day or night.',
+                feature2_title: 'Smart Recommendations',
+                feature2_desc: 'AI analyzes customer behavior and suggests products or services they\'ll love, boosting your sales.',
+                feature3_title: 'Lead Collection',
+                feature3_desc: 'Automatically capture visitor information and turn curious browsers into qualified leads.',
+                feature4_title: 'Continuous Learning',
+                feature4_desc: 'Your AI gets smarter every day by learning from customer interactions and feedback.',
+                feature5_title: 'Bundle Suggestions',
+                feature5_desc: 'Increase average order value by intelligently recommending product bundles and upgrades.',
+                feature6_title: 'Analytics Dashboard',
+                feature6_desc: 'Track performance, customer satisfaction, and conversion rates with detailed insights.',
+                footer: 'Built with ❤️ by <a href="index.html">SARBAXIO</a> | Powering the future of customer engagement'
+            },
+            gr: {
+                back: 'Πίσω στο SARBAXIO',
+                title: 'AI Chatbot',
+                subtitle: 'Ο 24/7 Ψηφιακός σας Υπάλληλος',
+                description: 'Φανταστείτε έναν <strong>έξυπνο ψηφιακό βοηθό</strong> να εργάζεται για την επιχείρησή σας όλο το 24ωρο. Το AI chatbot μας <strong>προτείνει προϊόντα</strong>, <strong>συλλέγει leads</strong>, <strong>απαντά ερωτήσεις</strong>, <strong>προτείνει πακέτα</strong>, και <strong>μετατρέπει επισκέπτες σε πελάτες</strong>—όλα αυτόματα. <strong>Μην χάσετε ξανά πωλήσεις.</strong>',
+                badge1: 'Καμία Χαμένη Πώληση',
+                badge2: 'Πάντα Μαθαίνει',
+                badge3: 'Πάντα Βελτιώνεται',
+                cta: 'Ξεκινήστε Τώρα',
+                feature1_title: 'Διαθεσιμότητα 24/7',
+                feature1_desc: 'Ο AI βοηθός σας δεν κοιμάται ποτέ. Απαντά στους πελάτες άμεσα, οποιαδήποτε ώρα της ημέρας ή νύχτας.',
+                feature2_title: 'Έξυπνες Προτάσεις',
+                feature2_desc: 'Το AI αναλύει τη συμπεριφορά των πελατών και προτείνει προϊόντα ή υπηρεσίες που θα αγαπήσουν, αυξάνοντας τις πωλήσεις σας.',
+                feature3_title: 'Συλλογή Leads',
+                feature3_desc: 'Συλλέξτε αυτόματα πληροφορίες επισκεπτών και μετατρέψτε περίεργους browsers σε qualified leads.',
+                feature4_title: 'Συνεχής Μάθηση',
+                feature4_desc: 'Το AI σας γίνεται εξυπνότερο κάθε μέρα μαθαίνοντας από τις αλληλεπιδράσεις και το feedback των πελατών.',
+                feature5_title: 'Προτάσεις Πακέτων',
+                feature5_desc: 'Αυξήστε τη μέση αξία παραγγελίας προτείνοντας έξυπνα πακέτα προϊόντων και upgrades.',
+                feature6_title: 'Analytics Dashboard',
+                feature6_desc: 'Παρακολουθήστε την απόδοση, την ικανοποίηση πελατών και τα ποσοστά μετατροπής με λεπτομερή insights.',
+                footer: 'Φτιαγμένο με ❤️ από το <a href="index.html">SARBAXIO</a> | Τροφοδοτώντας το μέλλον της εξυπηρέτησης πελατών'
+            },
+            es: {
+                back: 'Volver a SARBAXIO',
+                title: 'Chatbot Impulsado por IA',
+                subtitle: 'Tu Empleado Digital 24/7',
+                description: 'Imagina un <strong>asistente digital inteligente</strong> trabajando para tu negocio las 24 horas. Nuestro chatbot de IA <strong>recomienda productos</strong>, <strong>recopila leads</strong>, <strong>responde preguntas</strong>, <strong>sugiere paquetes</strong> y <strong>convierte visitantes en clientes</strong>—todo automáticamente. <strong>Nunca pierdas otra venta.</strong>',
+                badge1: 'Nunca Pierdas una Venta',
+                badge2: 'Siempre Aprendiendo',
+                badge3: 'Siempre Mejorando',
+                cta: 'Comenzar Ahora',
+                feature1_title: 'Disponibilidad 24/7',
+                feature1_desc: 'Tu asistente de IA nunca duerme. Responde a los clientes instantáneamente, a cualquier hora del día o la noche.',
+                feature2_title: 'Recomendaciones Inteligentes',
+                feature2_desc: 'La IA analiza el comportamiento del cliente y sugiere productos o servicios que amarán, aumentando tus ventas.',
+                feature3_title: 'Recopilación de Leads',
+                feature3_desc: 'Captura automáticamente información de visitantes y convierte navegadores curiosos en leads calificados.',
+                feature4_title: 'Aprendizaje Continuo',
+                feature4_desc: 'Tu IA se vuelve más inteligente cada día aprendiendo de las interacciones y comentarios de los clientes.',
+                feature5_title: 'Sugerencias de Paquetes',
+                feature5_desc: 'Aumenta el valor promedio del pedido recomendando inteligentemente paquetes de productos y mejoras.',
+                feature6_title: 'Panel de Análisis',
+                feature6_desc: 'Rastrea el rendimiento, la satisfacción del cliente y las tasas de conversión con información detallada.',
+                footer: 'Construido con ❤️ por <a href="index.html">SARBAXIO</a> | Impulsando el futuro del compromiso del cliente'
+            }
+        };
+
+        // Apply Translations
+        function applyTranslations(lang) {
+            const trans = translations[lang] || translations.en;
+            document.getElementById('back-text').textContent = trans.back;
+            document.getElementById('main-title').textContent = trans.title;
+            document.getElementById('subtitle').textContent = trans.subtitle;
+            document.getElementById('description').innerHTML = trans.description;
+            document.getElementById('badge1').textContent = trans.badge1;
+            document.getElementById('badge2').textContent = trans.badge2;
+            document.getElementById('badge3').textContent = trans.badge3;
+            document.getElementById('cta-text').textContent = trans.cta;
+            document.getElementById('feature1-title').textContent = trans.feature1_title;
+            document.getElementById('feature1-desc').textContent = trans.feature1_desc;
+            document.getElementById('feature2-title').textContent = trans.feature2_title;
+            document.getElementById('feature2-desc').textContent = trans.feature2_desc;
+            document.getElementById('feature3-title').textContent = trans.feature3_title;
+            document.getElementById('feature3-desc').textContent = trans.feature3_desc;
+            document.getElementById('feature4-title').textContent = trans.feature4_title;
+            document.getElementById('feature4-desc').textContent = trans.feature4_desc;
+            document.getElementById('feature5-title').textContent = trans.feature5_title;
+            document.getElementById('feature5-desc').textContent = trans.feature5_desc;
+            document.getElementById('feature6-title').textContent = trans.feature6_title;
+            document.getElementById('feature6-desc').textContent = trans.feature6_desc;
+            document.getElementById('footer-text').innerHTML = trans.footer;
+        }
+
+        applyTranslations(detectedLang);
+
+        // Pass language to back link
+        const backBtn = document.getElementById('back-btn');
+        if (detectedLang !== 'en') {
+            backBtn.href = `index.html?lang=${detectedLang}`;
+        }
+
+        // Generate Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Generate Neural Network Lines
+        const neuralNetwork = document.getElementById('neural-network');
+        for (let i = 0; i < 10; i++) {
+            const line = document.createElement('div');
+            line.className = 'neural-line';
+            line.style.left = Math.random() * 100 + '%';
+            line.style.top = Math.random() * 100 + '%';
+            line.style.width = (100 + Math.random() * 300) + 'px';
+            line.style.transform = `rotate(${Math.random() * 360}deg)`;
+            line.style.animationDelay = Math.random() * 3 + 's';
+            neuralNetwork.appendChild(line);
+        }
+
+        // CTA Button Click
+        document.getElementById('cta-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (detectedLang !== 'en') {
+                window.location.href = `index.html?lang=${detectedLang}#contact`;
+            } else {
+                window.location.href = 'index.html#contact';
+            }
+        });
+    </script>
+</body>
+</html>

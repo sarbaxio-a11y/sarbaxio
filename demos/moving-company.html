@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swift Movers - Demo by SARBAXIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b35;
+            --dark: #2d3142;
+            --light: #f4f4f4;
+            --accent: #ff8c5a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Annotation Bubbles */
+        .annotation {
+            position: absolute;
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(255,0,0,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .annotation::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(255, 0, 0, 0.9);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .back-to-sarbaxio {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-sarbaxio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.9), rgba(255, 140, 90, 0.9)),
+                        url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1600') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .services {
+            padding: 80px 20px;
+            background: var(--light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            color: var(--dark);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            position: relative;
+        }
+
+        .service-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3);
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .service-card p {
+            color: #666;
+        }
+
+        .features {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            position: relative;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .feature-item i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-top: 5px;
+        }
+
+        .feature-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .contact {
+            padding: 80px 20px;
+            background: var(--dark);
+            color: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            position: relative;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .contact-form {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-group select option {
+            background: var(--dark);
+            color: white;
+        }
+
+        footer {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .back-to-sarbaxio {
+                top: 10px;
+                right: 10px;
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-to-sarbaxio">
+        <i class="fas fa-arrow-left"></i> Back to SARBAXIO
+    </a>
+
+    <section class="hero">
+        <div class="annotation" style="top: 100px; left: 50%; transform: translateX(-50%);">
+            📸 Εδώ θα μπει φωτογραφία από το ΔΙΚΟ ΣΟΥ φορτηγό ή την ομάδα σου!
+        </div>
+        <div class="hero-content">
+            <div class="annotation" style="top: -60px; left: 50%; transform: translateX(-50%);">
+                ✏️ Το όνομα της εταιρείας μεταφορών σου!
+            </div>
+            <h1>Swift Movers</h1>
+            <p>Professional Moving & Storage Services</p>
+            <a href="#contact" class="btn">Get Free Quote</a>
+        </div>
+    </section>
+
+    <section class="services">
+        <div class="container">
+            <div class="annotation" style="top: 20px; left: 50%; transform: translateX(-50%);">
+                📦 Πρόσθεσε τις ΔΙΚΕΣ ΣΟΥ υπηρεσίες μεταφορών!
+            </div>
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-home"></i>
+                    <h3>Residential Moving</h3>
+                    <p>Complete home relocation services with professional packing and unpacking</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-building"></i>
+                    <h3>Commercial Moving</h3>
+                    <p>Office and business relocations with minimal downtime</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-truck-loading"></i>
+                    <h3>Long Distance</h3>
+                    <p>Interstate and cross-country moving services</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-boxes"></i>
+                    <h3>Packing Services</h3>
+                    <p>Professional packing with quality materials</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-warehouse"></i>
+                    <h3>Storage Solutions</h3>
+                    <p>Secure short-term and long-term storage facilities</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-couch"></i>
+                    <h3>Furniture Assembly</h3>
+                    <p>Expert furniture disassembly and reassembly</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="annotation" style="top: 20px; left: 50%; transform: translateX(-50%);">
+                ⭐ Βάλε τα πλεονεκτήματα της ΔΙΚΗΣ ΣΟΥ εταιρείας!
+            </div>
+            <h2 class="section-title">Why Choose Us</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <h4>Fully Insured</h4>
+                        <p>Your belongings are protected with comprehensive insurance coverage</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <h4>Expert Team</h4>
+                        <p>Trained and experienced professionals handling your move</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <div>
+                        <h4>Transparent Pricing</h4>
+                        <p>No hidden fees - clear quotes upfront</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h4>On-Time Service</h4>
+                        <p>We respect your schedule and deliver on time</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="annotation" style="top: 20px; left: 50%; transform: translateX(-50%);">
+                📞 Τα ΔΙΚΑ ΣΟΥ στοιχεία επικοινωνίας εδώ!
+            </div>
+            <h2 class="section-title" style="color: white;">Request a Quote</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Contact Us</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Address</strong><br>
+                            456 Commerce Street<br>
+                            City, State 12345
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Phone</strong><br>
+                            +1 (555) 987-6543
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong><br>
+                            info@swiftmovers.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Hours</strong><br>
+                            Mon-Sun: 7AM - 9PM
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3>Get Free Quote</h3>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" placeholder="Your Phone" required>
+                        </div>
+                        <div class="form-group">
+                            <select required>
+                                <option value="">Select Service</option>
+                                <option>Residential Moving</option>
+                                <option>Commercial Moving</option>
+                                <option>Long Distance</option>
+                                <option>Storage</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Additional Details" required></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Request Quote</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Swift Movers. All rights reserved.</p>
+        <p style="margin-top: 10px;">
+            <small>Demo created by <a href="../index.html" style="color: var(--primary); text-decoration: none;">SARBAXIO</a></small>
+        </p>
+    </footer>
+</body>
+</html>
