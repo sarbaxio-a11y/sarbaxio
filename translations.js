@@ -19,7 +19,7 @@ const translations = {
         hero: {
             title: "Welcome to",
             brand: "SARBAXIO",
-            subtitle: "A Dynamic Group of Expert Developers",
+            subtitle: "Technology at the Service of Humanity",
             description: "We're a network of specialized freelance developers working together to deliver exceptional digital solutions. From websites to social media platforms, we've got you covered.",
             cta1: "Our Services",
             cta2: "Meet the Team"
@@ -166,7 +166,7 @@ const translations = {
         hero: {
             title: "Καλώς ήρθατε στην",
             brand: "SARBAXIO",
-            subtitle: "Ένα Δυναμικό Group Ειδικών Προγραμματιστών",
+            subtitle: "Η τεχνολογία στην υπηρεσία του ανθρώπου",
             description: "Είμαστε ένα δίκτυο εξειδικευμένων freelance προγραμματιστών που συνεργάζονται για να παρέχουν εξαιρετικές ψηφιακές λύσεις. Από websites έως social media platforms, σας καλύπτουμε.",
             cta1: "Οι Υπηρεσίες μας",
             cta2: "Γνωρίστε την Ομάδα"
@@ -313,7 +313,7 @@ const translations = {
         hero: {
             title: "Bienvenido a",
             brand: "SARBAXIO",
-            subtitle: "Un Grupo Dinámico de Desarrolladores Expertos",
+            subtitle: "La tecnología al servicio de la humanidad",
             description: "Somos una red de desarrolladores freelance especializados trabajando juntos para ofrecer soluciones digitales excepcionales. Desde sitios web hasta plataformas de redes sociales, te tenemos cubierto.",
             cta1: "Nuestros Servicios",
             cta2: "Conoce al Equipo"
