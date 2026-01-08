@@ -51,14 +51,14 @@
         </div>
         
         <!-- Mobile Menu Button (ALWAYS visible on mobile) -->
-        <button id="menuBtn" onclick="toggleMenu()" style="display: none; background: #667eea; border: none; color: white; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-size: 28px; line-height: 1;">
+        <button id="menuBtn" onclick="toggleMenu()" style="display: none; background: linear-gradient(135deg, #4169E1 0%, #4682F0 100%); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-size: 28px; line-height: 1; box-shadow: 0 4px 12px rgba(65,105,225,0.3);">
             ☰
         </button>
     </nav>
     
     <!-- Mobile Menu Overlay (hidden by default) -->
-    <div id="mobileMenu" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(65, 105, 225, 0.98) 0%, rgba(70, 130, 240, 0.98) 50%, rgba(65, 105, 225, 0.98) 100%); backdrop-filter: blur(10px); z-index: 9999; display: none; overflow-y: auto;">
-        <div style="padding: 80px 40px 40px;">
+    <div id="mobileMenu" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(65, 105, 225, 0.98) 0%, rgba(70, 130, 240, 0.98) 50%, rgba(65, 105, 225, 0.98) 100%); backdrop-filter: blur(10px); z-index: 9999; display: none; overflow-y: auto; -webkit-overflow-scrolling: touch;">
+        <div style="min-height: 100vh; padding: 80px 40px 60px; display: flex; flex-direction: column; justify-content: flex-start;">
             <!-- Close Button -->
             <button onclick="toggleMenu()" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5); color: white; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-size: 28px; line-height: 1;">
                 ✕
