@@ -461,8 +461,9 @@ body {
 /* ===== SERVICES SECTION - STARLINK STYLE ===== */
 .services {
     padding: var(--section-padding);
-    background: linear-gradient(135deg, #4169E1 0%, #4682F0 50%, #4169E1 100%);
-    border-top: 1px solid rgba(255,255,255,0.1);
+    background: linear-gradient(135deg, #4ECDC4 0%, #45d4cc 50%, #4ECDC4 100%);
+    border-top: 1px solid rgba(255,255,255,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
     position: relative;
     overflow: hidden;
 }
