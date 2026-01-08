@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Life Insurance - Demo by SARBAXIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0066cc;
+            --dark: #1e2832;
+            --light: #f7f9fc;
+            --accent: #0052a3;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .annotation {
+            position: absolute;
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(255,0,0,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .annotation::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(255, 0, 0, 0.9);
+        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .back-to-sarbaxio {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .back-to-sarbaxio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.9), rgba(0, 82, 163, 0.9)),
+                        url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .hero-content p { font-size: 1.5rem; margin-bottom: 30px; }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.4);
+        }
+        .services { padding: 80px 20px; background: var(--light); }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            color: var(--dark);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            position: relative;
+        }
+        .service-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.3);
+        }
+        .service-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        .service-card p { color: #666; }
+        .contact { padding: 80px 20px; background: var(--dark); color: white; }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            position: relative;
+        }
+        .contact-info h3 { font-size: 2rem; margin-bottom: 30px; }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .contact-item i { font-size: 1.5rem; color: var(--primary); }
+        .contact-form {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 15px;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        .form-group textarea { resize: vertical; min-height: 150px; }
+        footer { background: #000; color: white; text-align: center; padding: 30px 20px; }
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .back-to-sarbaxio { top: 10px; right: 10px; padding: 10px 20px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-to-sarbaxio">
+        <i class="fas fa-arrow-left"></i> Back to SARBAXIO
+    </a>
+
+    <section class="hero">
+        <div class="annotation" style="top: 100px; left: 50%; transform: translateX(-50%);">
+            📸 Εδώ θα μπει η ΔΙΚΗ ΣΟΥ φωτογραφία ή του γραφείου σου!
+        </div>
+        <div class="hero-content">
+            <div class="annotation" style="top: -60px; left: 50%; transform: translateX(-50%);">
+                ✏️ Το δικό σου όνομα ασφαλιστή!
+            </div>
+            <h1>Secure Life Insurance</h1>
+            <p>Protecting What Matters Most</p>
+            <a href="#contact" class="btn">Get Free Consultation</a>
+        </div>
+    </section>
+
+    <section class="services">
+        <div class="container">
+            <div class="annotation" style="top: 20px; left: 50%; transform: translateX(-50%);">
+                📋 Πρόσθεσε τα ΔΙΚΑ ΣΟΥ ασφαλιστικά προϊόντα!
+            </div>
+            <h2 class="section-title">Insurance Solutions</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Life Insurance</h3>
+                    <p>Comprehensive life coverage to protect your family's future</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-car"></i>
+                    <h3>Auto Insurance</h3>
+                    <p>Complete vehicle protection with competitive rates</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-home"></i>
+                    <h3>Home Insurance</h3>
+                    <p>Protect your property and belongings with confidence</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Health Insurance</h3>
+                    <p>Quality healthcare coverage for you and your family</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>Business Insurance</h3>
+                    <p>Safeguard your business with tailored coverage</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-umbrella"></i>
+                    <h3>Umbrella Policy</h3>
+                    <p>Extended liability coverage for complete peace of mind</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="annotation" style="top: 20px; left: 50%; transform: translateX(-50%);">
+                📞 Τα ΔΙΚΑ ΣΟΥ στοιχεία επικοινωνίας!
+            </div>
+            <h2 class="section-title" style="color: white;">Schedule Consultation</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Office</strong><br>
+                            789 Financial Plaza<br>
+                            City, State 12345
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Phone</strong><br>
+                            +1 (555) 246-8135
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong><br>
+                            info@securelifeinsurance.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Hours</strong><br>
+                            Mon-Fri: 9AM - 6PM<br>
+                            Sat: By Appointment
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3>Request Consultation</h3>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" placeholder="Your Phone" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Tell us about your insurance needs" required></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Schedule Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Secure Life Insurance. All rights reserved.</p>
+        <p style="margin-top: 10px;">
+            <small>Demo created by <a href="../index.html" style="color: var(--primary); text-decoration: none;">SARBAXIO</a></small>
+        </p>
+    </footer>
+</body>
+</html>

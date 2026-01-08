@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Dropdown Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #fff; 
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: #111;
+            border-radius: 12px;
+        }
+        
+        h1 { margin-bottom: 30px; color: #667eea; }
+        
+        /* SIMPLE DROPDOWN - NO TRICKS */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        .dropdown-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dropdown-btn:hover {
+            background: #5568d3;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #222;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            margin-top: 5px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            z-index: 999999;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #333;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background: #667eea;
+        }
+        
+        .status {
+            margin-top: 30px;
+            padding: 20px;
+            background: #1a1a1a;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        
+        .status h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .log {
+            color: #4ade80;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 ULTRA SIMPLE DROPDOWN TEST</h1>
+        
+        <p style="margin-bottom: 20px;">Αν ΑΥΤΟ δεν δουλεύει, τότε έχουμε browser πρόβλημα.</p>
+        
+        <!-- SIMPLE DROPDOWN -->
+        <div class="dropdown" id="testDropdown">
+            <button class="dropdown-btn" id="dropdownBtn">
+                🇺🇸 EN ▼
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item" onclick="selectLang('en')">🇺🇸 English</div>
+                <div class="dropdown-item" onclick="selectLang('gr')">🇬🇷 Ελληνικά</div>
+                <div class="dropdown-item" onclick="selectLang('es')">🇪🇸 Español</div>
+            </div>
+        </div>
+        
+        <div class="status">
+            <h2>📊 Status Log:</h2>
+            <div id="log"></div>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('dropdownBtn');
+        const menu = document.getElementById('dropdownMenu');
+        const log = document.getElementById('log');
+        
+        function addLog(message) {
+            const entry = document.createElement('div');
+            entry.className = 'log';
+            entry.textContent = '✅ ' + message;
+            log.appendChild(entry);
+            console.log(message);
+        }
+        
+        // Toggle dropdown
+        btn.onclick = function(e) {
+            e.stopPropagation();
+            const isOpen = menu.classList.contains('show');
+            menu.classList.toggle('show');
+            addLog(isOpen ? 'Dropdown CLOSED' : 'Dropdown OPENED');
+        };
+        
+        // Close on outside click
+        document.onclick = function() {
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+                addLog('Dropdown closed by outside click');
+            }
+        };
+        
+        // Select language
+        function selectLang(lang) {
+            const flags = {en: '🇺🇸', gr: '🇬🇷', es: '🇪🇸'};
+            const names = {en: 'EN', gr: 'GR', es: 'ES'};
+            btn.innerHTML = flags[lang] + ' ' + names[lang] + ' ▼';
+            menu.classList.remove('show');
+            addLog('Language changed to: ' + lang.toUpperCase());
+        }
+        
+        addLog('Page loaded successfully');
+        addLog('Click the button above to test dropdown');
+    </script>
+</body>
+</html>
